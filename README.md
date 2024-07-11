@@ -1,5 +1,4 @@
-# APLIKASI SATU DATA
-Master by MIKHSANW
+# SIMERAH
 
 ### Requirements
 - PHP >= 8.1
