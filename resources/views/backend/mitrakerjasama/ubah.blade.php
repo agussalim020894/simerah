@@ -18,7 +18,7 @@
             {!! Form::select('tingkatan', config('master.tingkatanmitrakerjasama'), $data->tingkatan, array('id' => 'tingkatan', 'class' => 'form-control', 'autocomplete' => 'off')) !!}
         </p>
         <p>
-            {!! Form::label('file_foto', 'Upload Gambar', array('class' => 'control-label')) !!}
+            {!! Form::label('file_foto', 'Upload Logo', array('class' => 'control-label')) !!}
             <small class="fa fa-info-circle text-danger"> Ekstensi .jpg/.png/.jpeg (Ukuran Gambar : 555 x 555 px)</small><br>
             {!! Form::file('file_foto', null, array('id' => 'file_foto', 'class' => 'form-control')) !!}
         </p>
