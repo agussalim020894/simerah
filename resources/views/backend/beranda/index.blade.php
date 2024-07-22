@@ -75,7 +75,7 @@ $counttotal = App\Model\Elemenkerjasama::count();
 </div>
 </div>
 
-<div class="col-lg-6">
+{{-- <div class="col-lg-6">
     <div id="panel-9" class="panel">
         <div class="panel-hdr">
             <h2>
@@ -99,7 +99,7 @@ $counttotal = App\Model\Elemenkerjasama::count();
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 
 </div>
 @endsection
