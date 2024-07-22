@@ -8,7 +8,7 @@
 		<div class="row">
 			<div class="col-4">
 				<select onchange="this.form.submit()" style="width: 50% ; height:30px" class="select2" name="mitrakerjasama" id="select2">
-					<option value="0" selected> - Pilih Mitra/Instansi Kerjasama - </option>
+					<option value="0" selected> - Pilih Mitra/Instansi Kerja Sama - </option>
 					@foreach($mitrakerjasamas as $data)
 					<option value="{{ $data->id }}">{{$data->nama}}</option>
 					@endforeach
@@ -20,7 +20,7 @@
 @endif
 <div class="panel-container show">
 	<div class="col-lg-12 pt-4 pt-lg-0 pb-2 text-right">
-		<!--<a href="{{url('/export/')}}" class="btn btn-primary">Export Ke Excel</a>-->
+		<button class="export-button" onclick="exportToExcel()">Export to Excel</button>
 	</div>
 	<div class="panel-content">
 		<table id="datatable" class="table table-bordered table-hover table-striped table-responsive">
@@ -95,6 +95,7 @@
     </div> -->
 @endsection
 @push('js')
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script> --}}
 @include('backend.home.datatable-js')
 <script type="text/javascript" src="{{ URL::asset(config('master.aplikasi.author').'/home/'.$halaman->link.'/'.$halaman->kode.'/jquery-crud.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset(config('master.aplikasi.author').'/laporankerjasama/mitrakerjasama/datatables.js') }}"></script>
@@ -160,6 +161,53 @@ function chart(data){
           });
 }
 </script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script>
+        function exportToExcel() {
+            // Get the table
+            const table = document.getElementById('datatable');
+            const wb = XLSX.utils.table_to_book(table);
+
+            // Process each cell in the table
+            const sheet = wb.Sheets[wb.SheetNames[0]];
+            const range = XLSX.utils.decode_range(sheet['!ref']);
+
+            for (let row = range.s.r; row <= range.e.r; row++) {
+                for (let col = range.s.c; col <= range.e.c; col++) {
+                    const cell_address = { c: col, r: row };
+                    const cell_ref = XLSX.utils.encode_cell(cell_address);
+                    const cell = sheet[cell_ref];
+
+                    if (cell && cell.v && typeof cell.v === 'string') {
+                        // Extract URLs from <a href> tags
+                        const urlMatch = cell.v.match(/<a href="([^"]*)">[^<]*<\/a>/);
+                        if (urlMatch) {
+                            // Replace the cell value with the URL
+                            cell.v = urlMatch[1];
+                        }
+                    }
+                }
+            }
+
+            // Export to Excel
+            XLSX.writeFile(wb, 'export.xlsx');
+        }
+    </script>
+	<style>
+		.export-button {
+			background-color: #ff0077; /* Warna latar belakang tombol */
+			color: #ffffff; /* Warna teks */
+			padding: 10px 20px; /* Padding tombol */
+			border: none; /* Hapus garis pinggir */
+			border-radius: 5px; /* Membuat sudut tombol lebih lembut */
+			cursor: pointer; /* Mengubah kursor menjadi tanda tangan saat dihover */
+			transition: background-color 0.3s ease; /* Animasi perubahan warna latar belakang */
+		}
+	
+		.export-button:hover {
+			background-color: #ff0077; /* Warna latar belakang saat tombol dihover */
+		}
+	</style>
 @endpush
 @push('css')
 <link rel="stylesheet" media="screen, print" href="{{ URL::asset('backend/css/formplugins/select2/select2.bundle.css') }}">
