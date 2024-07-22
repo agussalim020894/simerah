@@ -190,7 +190,7 @@ function chart(data){
             }
 
             // Export to Excel
-            XLSX.writeFile(wb, 'export.xlsx');
+            XLSX.writeFile(wb, 'Laporan Kerja Sama.xlsx');
         }
     </script>
 	<style>
