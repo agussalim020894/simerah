@@ -60,7 +60,7 @@
 						<td style="text-align: center;">{!!$data->data->where('tahun',$th)->first() ? '<a href="'.$data->data->where('tahun',$th)->first()->file->getFileName($data->data->where('tahun',$th)->first()->id,'fileinstansi')->url_stream.'"><i class="fa fa-file-pdf-o text-info"></i></a>' : ''!!}</td>
 						@endforeach
 						<td>{{$data->jangkawaktu??''}}</td>
-						<td style="text-align: center;">@if($data->keterangan == '0')Aktif @elseif($data->keterangan == '1')Tidak Aktif @else Draft @endif</td>
+						<td style="text-align: center;">@if($data->keterangan == '0')Aktif @elseif($data->keterangan == '1')Tidak Aktif @else - @endif</td>
 						<td>{{$data->manfaat??''}}</td>
 						<!--<td>
 						@if(count($data->data)>0)
@@ -106,6 +106,57 @@
 <script src="{{url('frontend/js/functions.js')}}"></script>
 <script src="{{url('frontend/js/chart.js')}}"></script>
 <script src="{{url('frontend/js/chart-utils.js')}}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+<script>
+	function exportToExcel() {
+		// Get the table
+		const table = document.getElementById('datatable');
+		const wb = XLSX.utils.table_to_book(table);
+
+		// Process each cell in the table
+		const sheet = wb.Sheets[wb.SheetNames[0]];
+		const range = XLSX.utils.decode_range(sheet['!ref']);
+
+		for (let row = range.s.r; row <= range.e.r; row++) {
+			for (let col = range.s.c; col <= range.e.c; col++) {
+				const cell_address = { c: col, r: row };
+				const cell_ref = XLSX.utils.encode_cell(cell_address);
+				const cell = sheet[cell_ref];
+
+				if (cell && cell.v && typeof cell.v === 'string') {
+					// Create a temporary DOM element to parse the cell value
+					const tempElement = document.createElement('div');
+					tempElement.innerHTML = cell.v;
+					const linkElement = tempElement.querySelector('a');
+
+					// Check if the cell contains an <a> tag with a .pdf link
+					if (linkElement && linkElement.href.endsWith('.pdf')) {
+						// Replace the cell value with "File PDF Ada"
+						cell.v = "File PDF Ada";
+					}
+				}
+			}
+		}
+
+		// Export to Excel
+		XLSX.writeFile(wb, 'Laporan Kerja Sama.xlsx');
+	}
+</script>
+<style>
+	.export-button {
+		background-color: #ff0077; /* Warna latar belakang tombol */
+		color: #ffffff; /* Warna teks */
+		padding: 10px 20px; /* Padding tombol */
+		border: none; /* Hapus garis pinggir */
+		border-radius: 5px; /* Membuat sudut tombol lebih lembut */
+		cursor: pointer; /* Mengubah kursor menjadi tanda tangan saat dihover */
+		transition: background-color 0.3s ease; /* Animasi perubahan warna latar belakang */
+	}
+
+	.export-button:hover {
+		background-color: #ff0077; /* Warna latar belakang saat tombol dihover */
+	}
+</style>
 <!-- <script>
   $(document).on("click",".modalChart",function() {
     var id = $(this).attr('id');
@@ -161,53 +212,6 @@ function chart(data){
           });
 }
 </script> -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
-    <script>
-        function exportToExcel() {
-            // Get the table
-            const table = document.getElementById('datatable');
-            const wb = XLSX.utils.table_to_book(table);
-
-            // Process each cell in the table
-            const sheet = wb.Sheets[wb.SheetNames[0]];
-            const range = XLSX.utils.decode_range(sheet['!ref']);
-
-            for (let row = range.s.r; row <= range.e.r; row++) {
-                for (let col = range.s.c; col <= range.e.c; col++) {
-                    const cell_address = { c: col, r: row };
-                    const cell_ref = XLSX.utils.encode_cell(cell_address);
-                    const cell = sheet[cell_ref];
-
-                    if (cell && cell.v && typeof cell.v === 'string') {
-                        // Extract URLs from <a href> tags
-                        const urlMatch = cell.v.match(/<a href="([^"]*)">[^<]*<\/a>/);
-                        if (urlMatch) {
-                            // Replace the cell value with the URL
-                            cell.v = urlMatch[1];
-                        }
-                    }
-                }
-            }
-
-            // Export to Excel
-            XLSX.writeFile(wb, 'Laporan Kerja Sama.xlsx');
-        }
-    </script>
-	<style>
-		.export-button {
-			background-color: #ff0077; /* Warna latar belakang tombol */
-			color: #ffffff; /* Warna teks */
-			padding: 10px 20px; /* Padding tombol */
-			border: none; /* Hapus garis pinggir */
-			border-radius: 5px; /* Membuat sudut tombol lebih lembut */
-			cursor: pointer; /* Mengubah kursor menjadi tanda tangan saat dihover */
-			transition: background-color 0.3s ease; /* Animasi perubahan warna latar belakang */
-		}
-	
-		.export-button:hover {
-			background-color: #ff0077; /* Warna latar belakang saat tombol dihover */
-		}
-	</style>
 @endpush
 @push('css')
 <link rel="stylesheet" media="screen, print" href="{{ URL::asset('backend/css/formplugins/select2/select2.bundle.css') }}">
