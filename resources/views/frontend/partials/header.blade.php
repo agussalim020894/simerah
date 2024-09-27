@@ -5,11 +5,16 @@
       <h2>Di Sistem Informasi Kerja Sama Daerah <span>SI MERAH</span> Kabupaten Bengkalis</h2>
       <a href="#"><img src="images/banner.png" width="350" heigth="700"></a><br>
 
-      <nav id="navbar" class="navbar">
-        <a href="{{url('/login')}}"><div class="text-center"><button type="submit">Masuk Si Merah</button></div></a>
+      <nav id="navbar" class="navbar" style="display: flex; align-items: center; justify-content: left; gap: 10px;">
+        <a href="{{url('/login')}}" style="margin: 0; padding: 0;">
+            <button type="submit" style="margin: 0; padding: 10px;">Masuk Si Merah</button>
+        </a>
+        <a href="https://drive.google.com/file/d/1qZl4A-aFeCTmeXf2D6cZ93DOeYNYIWZL/view?usp=sharing" style="margin: 0; padding: 0;">
+            <button type="submit" style="margin: 0; padding: 10px;">Manual Book</button>
+        </a>
         <i class="bi bi-list mobile-nav-toggle"></i>
-      </nav>
-
+      </nav>    
+    
       <div class="social-links">
         <a href="#" class="whatsapp"><i class="bi bi-whatsapp"></i></a>
         <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
