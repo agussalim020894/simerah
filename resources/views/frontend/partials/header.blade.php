@@ -9,7 +9,7 @@
         <a href="{{url('/login')}}" style="margin: 0; padding: 0;">
             <button type="submit" style="margin: 0; padding: 10px;">Masuk Si Merah</button>
         </a>
-        <a href="https://drive.google.com/file/d/1qZl4A-aFeCTmeXf2D6cZ93DOeYNYIWZL/view?usp=sharing" style="margin: 0; padding: 0;">
+        <a href="https://drive.google.com/file/d/1qZl4A-aFeCTmeXf2D6cZ93DOeYNYIWZL/view?usp=sharing" target="_blank" ="margin: 0; padding: 0;">
             <button type="submit" style="margin: 0; padding: 10px;">Manual Book</button>
         </a>
         <i class="bi bi-list mobile-nav-toggle"></i>
